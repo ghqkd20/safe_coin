@@ -7,13 +7,11 @@ For Graduation Project, group safe_coin
 1. It use OP-TEE
     OP-TEE support several platform(also qemu)
 
-Link : [OP-TEE][optee_link]
-
-    [optee_link]: https://github.com/OP-TEE/optee_os
+Link : [OP-TEE](https://github.com/OP-TEE/optee_os)
 
 2. It use TZ4Fabric
     open-source-fabric-optee-chaincode by piachristel
 
-Link : [TZ4FABRIC][fz4fabric_link]
+Link : [TZ4FABRIC](https://github.com/piachristel/open-source-fabric-optee-chaincode)
 
-    [fz4fabric_link]: https://github.com/piachristel/open-source-fabric-optee-chaincode
+
