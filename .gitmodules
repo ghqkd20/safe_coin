@@ -1,0 +1,3 @@
+[submodule "open-source-fabric-optee-chaincode"]
+	path = open-source-fabric-optee-chaincode
+	url = https://github.com/piachristel/open-source-fabric-optee-chaincode.git
