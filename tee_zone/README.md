@@ -32,4 +32,3 @@ This directory is example directory.
 ## About static binary analysis and modifier
   Our implements is needed trampoline that intercept flow and call system call.
   So, This analyzer search branch code and modify it.
->>>>>>> 17322fc361273003f8301510db90910a70d2d35c

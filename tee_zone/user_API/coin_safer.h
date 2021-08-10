@@ -11,17 +11,17 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-/*
+
 typedef enum TYPE_LIMITS{
-    ZERO    = 0x00,
-    ONE     = 0xFF,
-    TWO     = 0xFFFF,
-    FOUR    = 0xFFFFFFFF,
-    EIGHT   = 0xFFFFFFFFFFFFFFFF,
+    NON_B     = 0x00,
+    ONE_B     = 0xFF,
+    TWO_B     = 0xFFFF,
+    FOUR_B    = 0xFFFFFFFF,
+    EIGHT_B   = 0xFFFFFFFFFFFFFFFF,
 } TYPE_LIMITS;
 
 TYPE_LIMITS set_limit(size_t val);
-*/
+
 /*Operations
  *We support operations agianst overflow
  *assume 'a' and 'b' must same type
@@ -30,14 +30,14 @@ TYPE_LIMITS set_limit(size_t val);
  *if overflow occured, flag be non-zero
  *This valid at GCC compiler
  */
-/*
+
 #define O_UADD(a, b, flag,type)    ({                           \
                 TYPE_LIMITS limits = set_limit(sizeof(type));   \
                 uint64_t c = a+b;                               \
                 if(c<a) flag=1;                                 \
                 (type) c;                                       \
 })
-*/
+
 /*
 #define ADD_OVERFLOW
 

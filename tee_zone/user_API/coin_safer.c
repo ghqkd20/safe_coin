@@ -1,35 +1,35 @@
-#include <safe_tracer.h>
+#include <test.h>
 
 /*
 typedef enum TYPE_LIMITS{                                                                                              
-    ZERO    = 0x00,
-    ONE     = 0xFF,
-    TWO     = 0xFFFF,
-    FOUR    = 0xFFFFFFFF,
-    EIGHT   = 0xFFFFFFFFFFFFFFFF,
+    NON_B     = 0x00,
+    ONE_B     = 0xFF,
+    TWO_B     = 0xFFFF,
+    FOUR_B    = 0xFFFFFFFF,
+    EIGHT_B   = 0xFFFFFFFFFFFFFFFF,
 } TYPE_LIMITS;
-
+*/
 TYPE_LIMITS set_limit(size_t val){
-    TYPE_LIMITS res = ZERO;
+    TYPE_LIMITS res = NON_B;
     switch(val){
         case 1:
-            res = ONE;
+            res = ONE_B;
             break;
         case 2:
-            res = TWO;
+            res = TWO_B;
             break;
         case 4:
-            res = FOUR;
+            res = FOUR_B;
             break;
         case 8:
-            res = EIGHT;
+            res = EIGHT_B;
             break;
         default:
             break;
     }
     return res;
 }
-*/
+
 
 TEE_Result D_test(const char* f_name, int line_num,const int count, ...)
 {
