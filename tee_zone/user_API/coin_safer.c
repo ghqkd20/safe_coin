@@ -1,14 +1,5 @@
-#include <test.h>
+#include <coin_safer.h>
 
-/*
-typedef enum TYPE_LIMITS{                                                                                              
-    NON_B     = 0x00,
-    ONE_B     = 0xFF,
-    TWO_B     = 0xFFFF,
-    FOUR_B    = 0xFFFFFFFF,
-    EIGHT_B   = 0xFFFFFFFFFFFFFFFF,
-} TYPE_LIMITS;
-*/
 TYPE_LIMITS set_limit(size_t val){
     TYPE_LIMITS res = NON_B;
     switch(val){
@@ -28,6 +19,9 @@ TYPE_LIMITS set_limit(size_t val){
             break;
     }
     return res;
+}
+bool check_overflow(){
+    return overflow_flag;
 }
 
 
