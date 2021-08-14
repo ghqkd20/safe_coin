@@ -1,0 +1,122 @@
+core/mm/vm.c:	 * Synchronize change to translation tables. Even though the pager
+core/mm/vm.c:	 * case unmaps immediately we may still free a translation table.
+core/mm/vm.c:		/* Synchronize changes to translation tables */
+core/mm/vm.c:	 * Save translation tables in a cache if it's a user TA.
+Binary file core/mm/.vm.c.swp matches
+core/arch/arm/mm/core_mmu_v7.c:	case 0x5: /* DFSR[10,3:0] b00101 Translation fault first level */
+core/arch/arm/mm/core_mmu_v7.c:	case 0x7: /* DFSR[10,3:0] b00111 Translation fault second level */
+core/arch/arm/mm/tee_pager.c:			panic("Unsupported page size in translation table");
+core/arch/arm/mm/core_mmu_lpae.c:/* Values for number of entries in each MMU translation table */
+core/arch/arm/mm/core_mmu_lpae.c:/* Values to convert a memory address to an index into a translation table */
+core/arch/arm/mm/core_mmu_lpae.c:			 * Level 1 is the CPU specific translation table.
+core/arch/arm/mm/core_mmu_lpae.c:	case 0x1: /* b0001LL Translation fault */
+core/arch/arm/mm/core_mmu.c: * mapping for pager usage. This adds translation tables as needed for the
+core/arch/arm/mm/core_mmu.c:		 * translation table, at the increased risk of clashes with
+core/arch/arm/mm/core_mmu.c:	 * Add a entry covering the translation tables which will be
+core/arch/arm/mm/core_mmu.c:			 * We're assigning a new translation table.
+core/arch/arm/mm/core_mmu.c:	 * Make sure all the changes to translation tables are visible
+core/arch/arm/mm/core_mmu.c:	 * Make sure all the changes to translation tables are visible
+core/arch/arm/plat-imx/pm/pm-imx7.c:	/* iram mmu translation table already initialized */
+core/arch/arm/kernel/entry_a32.S:	 * Make sure translation table writes have drained into memory and
+core/arch/arm/kernel/entry_a64.S:	 * Make sure translation table writes have drained into memory and
+core/arch/arm/kernel/arm32_sysreg.txt:TTBCR       c2  0 c0 2 RW Translation Table Base Control Register
+core/arch/arm/kernel/arm32_sysreg.txt:TTBR0       c2  0 c0 0 RW Translation Table Base Register 0
+core/arch/arm/kernel/arm32_sysreg.txt:TTBR0_64bit -   0 c2 - RW Translation Table Base Register 0
+core/arch/arm/kernel/arm32_sysreg.txt:TTBR1       c2  0 c0 1 RW Translation Table Base Register 1
+core/arch/arm/kernel/arm32_sysreg.txt:TTBR1_64bit -   1 c2 - RW Translation Table Base Register 1
+core/arch/arm/kernel/arm32_sysreg.txt:@ B3.18.8 Address translation operations, functional group
+core/arch/arm/kernel/abort.c:		return " (translation fault)";
+core/arch/arm/kernel/thread_a32.S:		 * Since the translation table could reside above 4GB we'll
+core/arch/arm/tee/entry_fast.c:	 * When translation tables are created with shared bit cleared for
+core/arch/arm/include/mm/core_mmu.h: * PGDIR is the translation table above the translation table that holds
+core/arch/arm/include/mm/core_mmu.h: * @user_map:	physical address of user map translation table
+core/arch/arm/include/mm/core_mmu.h: * @CORE_MMU_FAULT_TRANSLATION:		translation fault
+core/arch/arm/include/mm/core_mmu.h: * struct core_mmu_table_info - Properties for a translation table
+core/arch/arm/include/mm/core_mmu.h: * @table:	Pointer to translation table
+core/arch/arm/include/mm/core_mmu.h: * @level:	Translation table level
+core/arch/arm/include/mm/core_mmu.h: * core_mmu_find_table() - Locates a translation table
+core/arch/arm/include/mm/core_mmu.h: * @return true if a translation table was found, false on error
+core/arch/arm/include/mm/core_mmu.h: * core_mmu_set_entry() - Set entry in translation table
+core/arch/arm/include/mm/core_mmu.h: * @tbl_info:	Translation table properties
+core/arch/arm/include/mm/core_mmu.h: * core_mmu_get_entry() - Get entry from translation table
+core/arch/arm/include/mm/core_mmu.h: * @tbl_info:	Translation table properties
+core/arch/arm/include/mm/core_mmu.h: * @tbl_info:	Translation table properties
+core/arch/arm/include/mm/core_mmu.h: * @tbl_info:	Translation table properties
+core/arch/arm/include/mm/core_mmu.h: * @tbl_info:	Translation table properties
+core/arch/arm/include/mm/core_mmu.h: * @returns offset within one block of the translation table
+core/arch/arm/include/mm/tee_pager.h: * translation table managed by the pager.
+core/arch/arm/include/mm/tee_pager.h: * Returns true if address is in the pager translation tables else false
+core/arch/arm/include/mm/tee_pager.h: * tee_pager_assign_um_tables() - Assigns translation table to a user ta
+core/arch/arm/include/mm/tee_pager.h: * This function is called to assign translation tables for the pageable
+core/arch/arm/include/mm/tee_pager.h: * and remove physical page from translation table
+core/arch/arm/include/mm/tee_pager.h: * This function is called when a translation table needs to be recycled
+lib/libmbedtls/mbedtls/LICENSE:      transformation or translation of a Source form, including but
+lib/libmbedtls/mbedtls/include/mbedtls/check_config.h: * #if defined(MBEDTLS_xxx_C) that results in empty translation units.
+lib/libmbedtls/mbedtls/include/mbedtls/check_config.h:typedef int mbedtls_iso_c_forbids_empty_translation_units;
+lib/libmbedtls/mbedtls/include/mbedtls/psa_util.h:/* Translations for symmetric crypto. */
+lib/libmbedtls/mbedtls/include/mbedtls/psa_util.h:/* Translations for hashing. */
+lib/libmbedtls/mbedtls/include/mbedtls/psa_util.h:/* Translations for ECC. */
+lib/libmbedtls/mbedtls/include/mbedtls/psa_util.h:/* Translations for PK layer */
+lib/libmbedtls/mbedtls/include/mbedtls/psa_util.h:/* Translations for ECC */
+lib/libmbedtls/mbedtls/include/mbedtls/error.h: * \brief Error to string translation
+Binary file out/arm/core/unpaged.o matches
+Binary file out/arm/core/tee-pager_v2.bin matches
+Binary file out/arm/core/all_objs.o matches
+Binary file out/arm/core/tee.elf matches
+Binary file out/arm/core/tee.bin matches
+Binary file out/arm/core/init.o matches
+Binary file out/arm/core/arch/arm/kernel/abort.o matches
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Control Register */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Control Register */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 0 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 0 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 0 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 0 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 1 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 1 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 1 */
+out/arm/core/include/generated/arm32_sysreg.h:/* Translation Table Base Register 1 */
+out/arm/core/include/generated/arm32_sysreg.h:/* B3.18.8 Address translation operations, functional group */
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Control Register
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Control Register
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 0
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 0
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 0
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 0
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 1
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 1
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 1
+out/arm/core/include/generated/arm32_sysreg.S:	# Translation Table Base Register 1
+out/arm/core/include/generated/arm32_sysreg.S:# B3.18.8 Address translation operations, functional group
+out/arm/export-ta_arm32/host_include/mbedtls/check_config.h: * #if defined(MBEDTLS_xxx_C) that results in empty translation units.
+out/arm/export-ta_arm32/host_include/mbedtls/check_config.h:typedef int mbedtls_iso_c_forbids_empty_translation_units;
+out/arm/export-ta_arm32/host_include/mbedtls/psa_util.h:/* Translations for symmetric crypto. */
+out/arm/export-ta_arm32/host_include/mbedtls/psa_util.h:/* Translations for hashing. */
+out/arm/export-ta_arm32/host_include/mbedtls/psa_util.h:/* Translations for ECC. */
+out/arm/export-ta_arm32/host_include/mbedtls/psa_util.h:/* Translations for PK layer */
+out/arm/export-ta_arm32/host_include/mbedtls/psa_util.h:/* Translations for ECC */
+out/arm/export-ta_arm32/host_include/mbedtls/error.h: * \brief Error to string translation
+out/arm/export-ta_arm32/include/mbedtls/check_config.h: * #if defined(MBEDTLS_xxx_C) that results in empty translation units.
+out/arm/export-ta_arm32/include/mbedtls/check_config.h:typedef int mbedtls_iso_c_forbids_empty_translation_units;
+out/arm/export-ta_arm32/include/mbedtls/psa_util.h:/* Translations for symmetric crypto. */
+out/arm/export-ta_arm32/include/mbedtls/psa_util.h:/* Translations for hashing. */
+out/arm/export-ta_arm32/include/mbedtls/psa_util.h:/* Translations for ECC. */
+out/arm/export-ta_arm32/include/mbedtls/psa_util.h:/* Translations for PK layer */
+out/arm/export-ta_arm32/include/mbedtls/psa_util.h:/* Translations for ECC */
+out/arm/export-ta_arm32/include/mbedtls/error.h: * \brief Error to string translation
+out/arm/export-ta_arm64/host_include/mbedtls/check_config.h: * #if defined(MBEDTLS_xxx_C) that results in empty translation units.
+out/arm/export-ta_arm64/host_include/mbedtls/check_config.h:typedef int mbedtls_iso_c_forbids_empty_translation_units;
+out/arm/export-ta_arm64/host_include/mbedtls/psa_util.h:/* Translations for symmetric crypto. */
+out/arm/export-ta_arm64/host_include/mbedtls/psa_util.h:/* Translations for hashing. */
+out/arm/export-ta_arm64/host_include/mbedtls/psa_util.h:/* Translations for ECC. */
+out/arm/export-ta_arm64/host_include/mbedtls/psa_util.h:/* Translations for PK layer */
+out/arm/export-ta_arm64/host_include/mbedtls/psa_util.h:/* Translations for ECC */
+out/arm/export-ta_arm64/host_include/mbedtls/error.h: * \brief Error to string translation
+out/arm/export-ta_arm64/include/mbedtls/check_config.h: * #if defined(MBEDTLS_xxx_C) that results in empty translation units.
+out/arm/export-ta_arm64/include/mbedtls/check_config.h:typedef int mbedtls_iso_c_forbids_empty_translation_units;
+out/arm/export-ta_arm64/include/mbedtls/psa_util.h:/* Translations for symmetric crypto. */
+out/arm/export-ta_arm64/include/mbedtls/psa_util.h:/* Translations for hashing. */
+out/arm/export-ta_arm64/include/mbedtls/psa_util.h:/* Translations for ECC. */
+out/arm/export-ta_arm64/include/mbedtls/psa_util.h:/* Translations for PK layer */
+out/arm/export-ta_arm64/include/mbedtls/psa_util.h:/* Translations for ECC */
+out/arm/export-ta_arm64/include/mbedtls/error.h: * \brief Error to string translation
