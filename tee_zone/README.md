@@ -12,6 +12,8 @@ This hash value send to peer and confirm validity
 2. modify add API in sub.mk(i.e. 'srcs-y += test.c')
 3. include in your code
 4. USE LOGH() or LOGH2()
+5. checking overflow use get 'overflow_flag'
+
 
 ### hello_world
 This directory is example directory.
@@ -19,6 +21,8 @@ This directory is example directory.
 ### problems
 1. current D_test function is non-static
 2. some file name occur Linking Error
+3. if some problem, check your output directory
+4. macro, same variable name occur error
 
 ## About Syscall
   Our code is use syscall to record control flow with hashing.
