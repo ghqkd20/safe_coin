@@ -434,5 +434,10 @@ TEE_Result TEE_GetMySyscall(uint64_t pc, bool ov)
     return _utee_mysyscall(pc,ov);   
 }
 
+TEE_Result TEE_GetMyHash(void *str)
+{
+    return _utee_getmyhash(str);
+}
+
 #define TEE_TEST(function)  (function)()
 

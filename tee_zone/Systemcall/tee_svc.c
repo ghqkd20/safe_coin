@@ -1012,6 +1012,17 @@ TEE_Result syscall_set_ta_time(const TEE_Time *mytime)
 
 /* User define system call*/
 
+void print_hex(void * arr,int size){
+    DMSG("PRINT_HEX_DATA!!!!!");
+    char* print_arr = (char*) arr;
+    for(int i=0; i<size; i++){
+        DMSG("%02x", *(print_arr+i));
+    }
+}
+
+
+static char *hash_data = NULL;                //for Cumulative Hashing
+
 #define MD5_HASH_SIZE 16
 
 TEE_Result syscall_mysyscall(uint64_t pc, bool ov){
@@ -1019,7 +1030,7 @@ TEE_Result syscall_mysyscall(uint64_t pc, bool ov){
     EMSG("program counter : %"PRIu64, pc);
     TEE_Result res;
 
-    static char *data = NULL;                //for Cumulative Hashing
+    static uint64_t previous_pc = 0x0;
     char inp[255];                            //buffer
 
     memset(inp, 0, 32);
@@ -1028,29 +1039,54 @@ TEE_Result syscall_mysyscall(uint64_t pc, bool ov){
 
     EMSG("Before data : %s",inp);
 
-    if(data != NULL){
+    if(hash_data != NULL){
         /*already exists => data + pc = h */
-        strlcat(inp, data, sizeof(inp));
-        EMSG("second try before data : %s", data);
+        strlcat(inp, hash_data, sizeof(inp));
+        EMSG("second try before data : %s", hash_data);
+        EMSG("diff program counter : %"PRIu64, pc-previous_pc);
+        previous_pc = pc;
 
-    }else if(data == NULL){
+    }else if(hash_data == NULL){
         /* h = pc */
-        EMSG("First try : %"PRIu32, pc);
-        data = (char*)malloc(MD5_HASH_SIZE);           //assign heap memory to save hash
+        EMSG("First try : %"PRIu64, pc);
+        hash_data = (char*)malloc(MD5_HASH_SIZE);           //assign heap memory to save hash
+        previous_pc = pc;
     }
 
-    res = tee_hash_createdigest(TEE_ALG_MD5, inp, sizeof(inp), data, MD5_HASH_SIZE);
+    res = tee_hash_createdigest(TEE_ALG_MD5, inp, sizeof(inp), hash_data, MD5_HASH_SIZE);
 
     if(res != TEE_SUCCESS){
         //Error occured...
         EMSG("Failed");
-        free_wipe(data); 
+        free_wipe(hash_data); 
         return TEE_ERROR_CANCEL;
     }
+    /* This for debugging test*/ 
+    print_hex(hash_data, MD5_HASH_SIZE);
 
-    EMSG("HASH Success : %d", sizeof(data));
+    EMSG("HASH Success : %d", sizeof(hash_data));
     
 
     return TEE_SUCCESS;
+}
+
+TEE_Result syscall_getmyhash(void *str){
+    
+    TEE_Result res = TEE_SUCCESS;
+    if(hash_data == NULL){
+        return TEE_ERROR_CANCEL;
+    }
+    
+    memset(str,0,MD5_HASH_SIZE);
+    
+    res = copy_to_user(str,hash_data ,MD5_HASH_SIZE);
+    /* This for dubugging test
+    
+    EMSG("GETMYHASH SYSTEM CALL");
+    print_hex(str,MD5_HASH_SIZE);
+    print_hex(hash_data,MD5_HASH_SIZE);
+    
+    */
+    return res;
 }
 

@@ -124,3 +124,4 @@
         UTEE_SYSCALL _utee_cache_operation, TEE_SCN_CACHE_OPERATION, 3
 /* User define system call*/
         UTEE_SYSCALL _utee_mysyscall, TEE_SCN_MYSYSCALL, 2
+        UTEE_SYSCALL _utee_getmyhash, TEE_SCN_GETMYHASH, 1

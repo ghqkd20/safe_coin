@@ -76,5 +76,6 @@ TEE_Result syscall_set_ta_time(const TEE_Time *time);
 
 /* User define system call*/
 TEE_Result syscall_mysyscall(uint64_t pc, bool ov);
+TEE_Result syscall_getmyhash(void* str);
 
 #endif /* TEE_SVC_H */
