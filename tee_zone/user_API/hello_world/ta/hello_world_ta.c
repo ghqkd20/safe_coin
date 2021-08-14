@@ -29,7 +29,9 @@
 #include <tee_internal_api_extensions.h>
 
 #include <hello_world_ta.h>
-#include <safe_tracer.h>
+#include <coin_safer.h>
+
+
 
 /*
  * Called when the instance of the TA is created. This is the first call in
@@ -105,14 +107,17 @@ static TEE_Result inc_value(uint32_t param_types,
 
 	DMSG("has been called");
     //TEE_GetMySyscall(1);
-    //LOGH(2,215, 557);
+    LOGH(2,215, 557);
+    LOGH(0,0);
+    uint64_t bye = get_pc();	
+    DMSG("BYEBYEBYE %"PRIu64,bye);
 
 	if (param_types != exp_param_types)
 		return TEE_ERROR_BAD_PARAMETERS;
 
 	IMSG("Got value: %u from NW", params[0].value.a);
 	//params[0].value.a++;
-	params[0].value.a+=1;
+	params[0].value.a+=1;  
 	IMSG("Increase value to: %u", params[0].value.a);
 
 	return TEE_SUCCESS;
@@ -148,10 +153,20 @@ TEE_Result TA_InvokeCommandEntryPoint(void __maybe_unused *sess_ctx,
 {
 
 	(void)&sess_ctx; /* Unused parameter */
-	int hell[3] = {100, 200, 300};
-    LOGH2(3,hell);
-    
-	
+    	
+    //bool myflag=0;
+    //int hell[3] = {100, 200, 300};
+    /*
+    unsigned int result_hell = O_UADD(5,9, myflag,unsigned int);
+    DMSG("=====================%ud %d =============",result_hell,myflag);
+    unsigned int result_hell2 = O_UADD(0xffffffff,9, myflag,unsigned int);
+    DMSG("=====================%ud %d =============",result_hell2,myflag);
+    */  
+    //DMSG("==========result=========== %d=============",check_overflow());
+    //LOGH2(3,hell);
+    //DMSG("==========result=========== %d=============",check_overflow());
+    uint64_t hi = get_pc();	
+    DMSG("HIHIHIHI %"PRIu64,hi);
     switch (cmd_id) {
 	case TA_HELLO_WORLD_CMD_INC_VALUE:
 		return inc_value(param_types, params);
