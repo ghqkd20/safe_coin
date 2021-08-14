@@ -20,16 +20,17 @@ TYPE_LIMITS set_limit(size_t val){
     }
     return res;
 }
+
+
 bool check_overflow(){
     return overflow_flag;
 }
 
 
-TEE_Result D_test(const char* f_name, int line_num,const int count, ...)
+TEE_Result D_test(const char* f_name, int line_num,uint64_t pc ,const int count, ...)
 {
 
     EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
-    uint64_t program_counter = 10;
 
     /*
      *TODO :: Check operation overflow with Variadic parameters
@@ -46,14 +47,13 @@ TEE_Result D_test(const char* f_name, int line_num,const int count, ...)
         }
         va_end(ap);
     }
-    return TEE_GetMySyscall(program_counter/*, isFault*/);
+    return TEE_GetMySyscall(pc,check_overflow());
 }
 
-TEE_Result D_test2(const char* f_name, int line_num,const int count, void *args)
+TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc, const int count, void *args)
 {
 
     EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
-    uint64_t program_counter = 10;
 
     /*
      *TODO :: Check operation overflow with pointer
@@ -68,7 +68,7 @@ TEE_Result D_test2(const char* f_name, int line_num,const int count, void *args)
             EMSG("%d",*(my_args+i));
         }
     }
-    return TEE_GetMySyscall(program_counter/*, isFault*/);
+    return TEE_GetMySyscall(pc, check_overflow() );
 }
 
 

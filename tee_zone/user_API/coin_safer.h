@@ -54,7 +54,6 @@ TYPE_LIMITS set_limit(size_t val);
                 (type) res;                       \
 })
 
-/*
 
 //signed addition result according to variable type
 //we just check both are same type.
@@ -66,6 +65,7 @@ TYPE_LIMITS set_limit(size_t val);
                 (type) res;                                                 \
 })
 
+/*
 //unsigned addition result must greater than or equal to
 #define O_USUB(a, b, type)   ({                                  \
                 TYPE_LIMITS limits = set_limit(sizeof(type));   \
@@ -138,8 +138,8 @@ static __always_inline __noprof uint64_t get_pc()
  *Second is pointer 
  *
  */
-TEE_Result D_test(const char* f_name, int line_num,const int count, ...);
-TEE_Result D_test2(const char* f_name, int line_num,const int count, void *args);
+TEE_Result D_test(const char* f_name, int line_num,uint64_t pc,const int count, ...);
+TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc,const int count, void *args);
 
 
 /*
@@ -152,14 +152,14 @@ TEE_Result D_test2(const char* f_name, int line_num,const int count, void *args)
  * args  : operands
  */
 #define LOGH(count , ...) ({                         \
-    get_pc();                                            \
-    D_test(__func__, __LINE__, count , __VA_ARGS__);    \
+    uint64_t pc = get_pc();                                            \
+    D_test(__func__, __LINE__, pc , count , __VA_ARGS__);    \
 })
 
 //version 2, using pointer
 #define LOGH2(count , args) ({                         \
-    get_pc();                                            \
-    D_test2(__func__, __LINE__, count , args);    \
+    uint64_t pc = get_pc();                                            \
+    D_test2(__func__, __LINE__, pc , count , args);    \
 })
 
 
