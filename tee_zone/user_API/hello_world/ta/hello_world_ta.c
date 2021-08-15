@@ -24,9 +24,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include <tee_internal_api.h>
 #include <tee_internal_api_extensions.h>
+
+#include <string.h>
 
 #include <hello_world_ta.h>
 #include <coin_safer.h>
@@ -106,9 +107,24 @@ static TEE_Result inc_value(uint32_t param_types,
 						   TEE_PARAM_TYPE_NONE);
 
 	DMSG("has been called");
-    //TEE_GetMySyscall(1);
     LOGH(2,215, 557);
     LOGH(0,0);
+    
+    char* hash_str = get_hash();
+    DMSG("EXECUTED???????????????");
+    for(int i=0; i<16; i++){
+        DMSG("%02x",*(hash_str+i));
+    }
+    char* default_text = "hello my response";
+    char response[255];
+    TEE_MemMove(response, default_text, strlen(default_text));
+    TEE_MemMove(response+strlen(default_text), hash_str, 16);
+    DMSG("RESULT???????????????");
+    for(int i=0; i<16+strlen(default_text); i++){
+        DMSG("%02x",response[i]);
+    }
+
+    
     uint64_t bye = get_pc();	
     DMSG("BYEBYEBYE %"PRIu64,bye);
 
@@ -167,6 +183,7 @@ TEE_Result TA_InvokeCommandEntryPoint(void __maybe_unused *sess_ctx,
     //DMSG("==========result=========== %d=============",check_overflow());
     uint64_t hi = get_pc();	
     DMSG("HIHIHIHI %"PRIu64,hi);
+
     switch (cmd_id) {
 	case TA_HELLO_WORLD_CMD_INC_VALUE:
 		return inc_value(param_types, params);

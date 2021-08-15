@@ -89,5 +89,24 @@ TEE_Result D_test2(const char* f_name, int line_num, uint64_t pc ,const int coun
 }
 
 
+char* get_hash()
+{
+    static char hash_test[64];
+    TEE_Result res = TEE_SUCCESS;
+    res = TEE_GetMyHash(hash_test);
+    
+    if(res != TEE_SUCCESS){
+        EMSG("GetMyHash Error !!");
+        return NULL;
+    }
+    /*for debugging
+    DMSG("EXECUTED???????????????");
+    for(int i=0; i<16; i++){
+        DMSG("%02x",hash_test[i]);
+    }
+    */
+    return hash_test;
+
+}
 
 

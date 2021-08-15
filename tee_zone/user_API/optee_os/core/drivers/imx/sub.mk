@@ -1,1 +1,0 @@
-subdirs-$(CFG_IMX_DCP) += dcp
