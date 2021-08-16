@@ -259,7 +259,7 @@ static TEE_Result query_write_response(struct chaincode_ctx *ctx, uint32_t param
     if(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])
         +strlen(coffee)+strlen(coffee) < 80){
         TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])
-                    +strlen(coffee+strlen(coffee), get_hash(),16);
+                    +strlen(coffee+strlen(coffee)), get_hash(),16);
     }
 	
     return write_response(params, response);
