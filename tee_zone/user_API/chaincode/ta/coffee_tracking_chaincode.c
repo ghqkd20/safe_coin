@@ -81,6 +81,7 @@ static TEE_Result add_write_response(struct chaincode_ctx *ctx, uint32_t param_t
 
 	/* send result */
 	char response[RESPONSE_SIZE] = "OK";
+    TEE_MemMove(response+2, get_hash(),16);
 	return write_response(params, response);
 }
 
@@ -163,6 +164,7 @@ static TEE_Result create_write_response(struct chaincode_ctx *ctx, uint32_t para
 
 	/* send result */
 	char response[RESPONSE_SIZE] = "OK";
+    TEE_MemMove(response+2, get_hash(),16);
 	return write_response(params, response);
 }
 
@@ -254,7 +256,13 @@ static TEE_Result query_write_response(struct chaincode_ctx *ctx, uint32_t param
 	TEE_MemMove(response+strlen(person), ctx->chaincode_args.arguments[0], strlen(ctx->chaincode_args.arguments[0]));
 	TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0]), coffee, strlen(coffee));
 	TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])+strlen(coffee), val, strlen(val));
-	return write_response(params, response);
+    if(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])
+        +strlen(coffee)+strlen(coffee) < 80){
+        TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])
+                    +strlen(coffee+strlen(coffee), get_hash(),16);
+    }
+	
+    return write_response(params, response);
 }
 
 static TEE_Result query_get_state(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
