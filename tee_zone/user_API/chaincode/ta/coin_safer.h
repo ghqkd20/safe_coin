@@ -13,7 +13,6 @@
 #include <stdio.h>
 
 static bool overflowflag = false;
-
 typedef enum TYPE_LIMITS{
     NON_B     = 0x00,
     ONE_B     = 0xFF,
@@ -99,7 +98,7 @@ static __always_inline __noprof uint64_t get_pc()
  */
 TEE_Result D_test(const char* f_name, int line_num, uint64_t pc, const int count, ...);
 TEE_Result D_test2(const char* f_name, int line_num, uint64_t pc, const int count, void *args);
-
+char* get_hash();
 
 /*
  * LOG with Hashing
