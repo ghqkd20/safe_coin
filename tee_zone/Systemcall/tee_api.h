@@ -442,5 +442,5 @@ void TEE_BigIntComputeFMM(TEE_BigIntFMM *dest, const TEE_BigIntFMM *op1,
 
 /* User define system call*/
 TEE_Result TEE_GetMySyscall(uint64_t pc, bool ov);
-TEE_Result TEE_GetMyHash(void* str);
+TEE_Result TEE_GetMyHash(void* str, bool ispop);
 #endif /* TEE_API_H */

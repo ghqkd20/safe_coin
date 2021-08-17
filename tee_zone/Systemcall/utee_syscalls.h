@@ -290,5 +290,5 @@ TEE_Result _utee_gprof_send(void *buf, size_t size, uint32_t *id);
 
 /* User define system call*/
 TEE_Result _utee_mysyscall(uint64_t pc, bool ov);
-TEE_Result _utee_getmyhash(void* str);
+TEE_Result _utee_getmyhash(void* str, bool ispop);
 #endif /* UTEE_SYSCALLS_H */
