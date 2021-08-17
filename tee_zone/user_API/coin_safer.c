@@ -76,7 +76,27 @@ char* get_hash()
 {
     static char hash_test[64];
     TEE_Result res = TEE_SUCCESS;
-    res = TEE_GetMyHash(hash_test);
+    res = TEE_GetMyHash(hash_test,false);
+
+    if(res != TEE_SUCCESS){
+        EMSG("GetMyHash Error !!");
+        return NULL;
+    }
+    /*for debugging
+    DMSG("EXECUTED???????????????");
+    for(int i=0; i<16; i++){
+        DMSG("%02x",hash_test[i]);
+    }
+    */
+    return hash_test;
+}   
+
+
+char* pop_hash()
+{
+    static char hash_test[64];
+    TEE_Result res = TEE_SUCCESS;
+    res = TEE_GetMyHash(hash_test,true);
 
     if(res != TEE_SUCCESS){
         EMSG("GetMyHash Error !!");

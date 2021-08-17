@@ -141,7 +141,7 @@ static __always_inline __noprof uint64_t get_pc()
 TEE_Result D_test(const char* f_name, int line_num,uint64_t pc,const int count, ...);
 TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc,const int count, void *args);
 char* get_hash();
-
+char* pop_hash();
 /*
  * LOG with Hashing
  * first get program counter(location)
