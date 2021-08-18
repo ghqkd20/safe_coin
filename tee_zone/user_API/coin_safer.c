@@ -1,5 +1,7 @@
 #include <coin_safer.h>
 
+bool overflow_flag = false;
+
 TYPE_LIMITS set_limit(size_t val){
     TYPE_LIMITS res = NON_B;
     switch(val){
@@ -14,6 +16,9 @@ TYPE_LIMITS set_limit(size_t val){
             break;
         case 8:
             res = EIGHT_B;
+            break;
+        case 16:
+            res = SIXTEEN_B;
             break;
         default:
             break;

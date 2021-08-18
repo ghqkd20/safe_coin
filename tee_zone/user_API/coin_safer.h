@@ -11,7 +11,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-static bool overflow_flag = false;
+extern bool overflow_flag;
 
 typedef enum TYPE_LIMITS{
     NON_B     = 0x00,
@@ -19,18 +19,28 @@ typedef enum TYPE_LIMITS{
     TWO_B     = 0xFFFF,
     FOUR_B    = 0xFFFFFFFF,
     EIGHT_B   = 0xFFFFFFFFFFFFFFFF,
+    SIXTEEN_B = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,
 } TYPE_LIMITS;
 
 TYPE_LIMITS set_limit(size_t val);
 
+//to assign value in variable, use this
+//if you use a as literal, cause type.
+#define CHECK_ASSIGN(a, type)   ({      \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t c = limits;                            \
+        if((~c & a) || (a != (type)a) ) overflowflag = true;    \
+        (type) a;                                       \
+})
+
 
 //sign same, res = 0
 #define CHECK_SIGN(a, b, type)    ({                            \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                limits = (limits>>1) ^ limits;                  \
-                uint64_t c = (a & limits) ^ (b & limits);     \
-                c = ((c == 0)? 1 : 0);                         \
-                c;                                              \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        limits = (limits>>1) ^ limits;                  \
+        uint64_t c = (a & limits) ^ (b & limits);     \
+        c = ((c == 0)? 1 : 0);                         \
+        c;                                              \
 })
 
 
@@ -48,70 +58,73 @@ TYPE_LIMITS set_limit(size_t val);
 
 //unsigned addition result must greater than or equal to
 #define O_UADD(a, b, type)    ({                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t res = (a+b)&limits;                               \
-                if(res<a) overflow_flag = true;   \
-                (type) res;                       \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t res = (a+b)&limits;                               \
+        if(res<a) overflow_flag = true;   \
+        (type) res;                       \
 })
 
 
 //signed addition result according to variable type
 //we just check both are same type.
 #define O_ADD(a, b, type)   ({                                              \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t equal_sign = CHECK_SIGN(a,b,type);                 \
-                int64_t res =a+b;                                         \
-                if(equal_sign && !CHECK_SIGN(res,a,type)) overflowflag = true; \
-                (type) res;                                                 \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t equal_sign = CHECK_SIGN(a,b,type);                 \
+        int64_t res =a+b;                                         \
+        if(equal_sign && !CHECK_SIGN(res,a,type)) overflowflag = true; \
+        (type) res;                                                 \
 })
+
+//unsigned substraction just compare operands
+#define O_USUB(a,b, type)   ({                 \
+        uint64_t res = a-b;            \
+        if(b>a)  overflow = true;      \
+        (type) res;                    \
+})
+
+//signed substraction result according to variable type
+//It similar to signed addition
+#define O_SUB(a,b, type)   ({                                                   \
+        TYPE_LIMITS limits = set_limit(sizeof(type));                   \
+        uint64_t equal_sign = CHECK_SIGN(a,b,type);                     \
+        uint64_t res = a-b;                                             \
+        if(equal_sign && !CHECK_SIGN(res,a,type)) overflowflag = true;  \
+        (type) res;                                                     \
+})
+
 
 /*
-//unsigned addition result must greater than or equal to
-#define O_USUB(a, b, type)   ({                                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t c = a+b;                               \
-                if(c<a) overflow_flag = true;                   \
-                (type) c;                                       \
-})
-
-//unsigned addition result must greater than or equal to
-#define O_SUB(a, b, type)   ({                                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t c = a+b;                               \
-                if(c<a) overflow_flag = true;                   \
-                (type) c;                                       \
-})
 
 //unsigned addition result must greater than or equal to
 #define O_UMUL(a, b, type)   ({                                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t c = a+b;                               \
-                if(c<a) overflow_flag = true;                   \
-                (type) c;                                       \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t c = a+b;                               \
+        if(c<a) overflow_flag = true;                   \
+        (type) c;                                       \
 })
 
 //unsigned addition result must greater than or equal to
 #define O_MUL(a, b, type)   ({                                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t c = a+b;                               \
-                if(c<a) overflow_flag = true;                   \
-                (type) c;                                       \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t c = a+b;                               \
+        if(c<a) overflow_flag = true;                   \
+        (type) c;                                       \
 })
 
 //unsigned addition result must greater than or equal to
 #define O_UDIV(a, b, type)   ({                                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t c = a+b;                               \
-                if(c<a) overflow_flag = true;                   \
-                (type) c;                                       \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t c = a+b;                               \
+        if(c<a) overflow_flag = true;                   \
+        (type) c;                                       \
 })
 
 //unsigned addition result must greater than or equal to
 #define O_DIV(a, b, type)   ({                                  \
-                TYPE_LIMITS limits = set_limit(sizeof(type));   \
-                uint64_t c = a+b;                               \
-                if(c<a) overflow_flag = true;                   \
-                (type) c;                                       \
+        TYPE_LIMITS limits = set_limit(sizeof(type));   \
+        uint64_t c = a+b;                               \
+        if(c<a) overflow_flag = true;                   \
+        (type) c;                                       \
 })
 */
 
