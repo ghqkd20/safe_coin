@@ -1,7 +1,6 @@
 #include <string.h>
 #include <chaincode_library.h>
 
-
 void init_context(struct chaincode_ctx *ctx, TEE_Param params[4])
 {
 	/* stores function in context */ 

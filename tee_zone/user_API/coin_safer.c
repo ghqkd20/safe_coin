@@ -107,6 +107,14 @@ char* pop_hash()
         EMSG("GetMyHash Error !!");
         return NULL;
     }
+
+    if(check_overflow()){
+        TEE_MemMove(hash_storage+16, "true", 4);
+    }else{
+        TEE_MemMove(hash_storage+16, "false", 5);
+    }
+
+
     /*for debugging
     DMSG("EXECUTED???????????????");
     for(int i=0; i<16; i++){

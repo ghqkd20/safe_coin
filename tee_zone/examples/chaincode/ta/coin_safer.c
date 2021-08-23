@@ -1,5 +1,7 @@
 #include <coin_safer.h>
 
+bool overflow_flag = false;
+
 TYPE_LIMITS set_limit(size_t val){
     TYPE_LIMITS res = NON_B;
     switch(val){
@@ -14,6 +16,9 @@ TYPE_LIMITS set_limit(size_t val){
             break;
         case 8:
             res = EIGHT_B;
+            break;
+        case 16:
+            res = SIXTEEN_B;
             break;
         default:
             break;
@@ -94,21 +99,33 @@ char* get_hash()
 
 char* pop_hash()
 {
-    static char hash_test[64];
+    static char hash_storage[64];
+    
     TEE_Result res = TEE_SUCCESS;
-    res = TEE_GetMyHash(hash_test,true);
-
+    DMSG("EXECUTED1???????????????");
+    res = TEE_GetMyHash(hash_storage,true);
+    
     if(res != TEE_SUCCESS){
         EMSG("GetMyHash Error !!");
+        EMSG("%x",res);
         return NULL;
     }
-    /*for debugging
-    DMSG("EXECUTED???????????????");
-    for(int i=0; i<16; i++){
-        DMSG("%02x",hash_test[i]);
+    DMSG("EXECUTED2???????????????");
+    
+    
+    if(check_overflow()){
+        TEE_MemMove(hash_storage+16, "true", 4);
+    }else{
+        TEE_MemMove(hash_storage+16, "false", 5);
     }
-    */
-    return hash_test;
+    
+    //for debugging
+    DMSG("SUCCESS???????????????");
+    for(int i=0; i<21; i++){
+        DMSG("%02x",*(hash_storage+i));
+    }
+     
+    return hash_storage;
 }   
 
 

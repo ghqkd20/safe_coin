@@ -1036,10 +1036,11 @@ TEE_Result syscall_mysyscall(uint64_t pc, bool ov){
     //fill with overflow flags
     memset(inp, 0, sizeof(inp));
 
-    if(hash_data != NULL){
+    if(hash_data != NULL && previous_pc != 0){
         /* exist hashing data */
         DMSG("diff program counter : %"PRIu64, pc-previous_pc);
-        snprintf(inp, sizeof(inp) ,"%"PRIu64"%d",pc-previous_pc,ov); 
+        //snprintf(inp, sizeof(inp) ,"%"PRIu64"%d",pc-previous_pc,ov); 
+        snprintf(inp, sizeof(inp) ,"%"PRIu64,pc-previous_pc); 
 
         DMSG("%s",inp);
         strlcat(inp, hash_data, sizeof(inp));
@@ -1047,10 +1048,13 @@ TEE_Result syscall_mysyscall(uint64_t pc, bool ov){
         DMSG("second try before data : %s", hash_data);
         previous_pc = pc;
 
-    }else if(hash_data == NULL){
+    }else if(previous_pc == 0){
         /* No hashing data  */
         DMSG("First try");
-        hash_data = (char*)malloc(MD5_HASH_SIZE);           //assign heap memory to save hash
+        if(hash_data == NULL){
+            //assign heap memory to save hash
+            hash_data = (char*)malloc(MD5_HASH_SIZE);
+        }
         previous_pc = pc;
     }
 
@@ -1075,6 +1079,7 @@ TEE_Result syscall_getmyhash(void *str,bool ispop){
     
     TEE_Result res = TEE_SUCCESS;
     if(hash_data == NULL){
+        EMSG("hash is null"); 
         return TEE_ERROR_CANCEL;
     }
     
@@ -1083,8 +1088,14 @@ TEE_Result syscall_getmyhash(void *str,bool ispop){
     res = copy_to_user(str,hash_data ,MD5_HASH_SIZE); 
     
     if(ispop == true){
-        free_wipe(hash_data);
+        previous_pc =0;
+        memset(hash_data, 0 ,MD5_HASH_SIZE);
     }
+    
+    if(res != TEE_SUCCESS){
+        DMSG("%x",res);
+    }
+
 
     /* This for dubugging test
     

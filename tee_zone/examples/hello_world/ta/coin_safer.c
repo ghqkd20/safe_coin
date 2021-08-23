@@ -1,5 +1,7 @@
 #include <coin_safer.h>
 
+bool overflow_flag = false;
+
 TYPE_LIMITS set_limit(size_t val){
     TYPE_LIMITS res = NON_B;
     switch(val){
@@ -15,18 +17,22 @@ TYPE_LIMITS set_limit(size_t val){
         case 8:
             res = EIGHT_B;
             break;
+        case 16:
+            res = SIXTEEN_B;
+            break;
         default:
             break;
     }
     return res;
 }
 
+
 bool check_overflow(){
-    return overflowflag;
+    return overflow_flag;
 }
 
 
-TEE_Result D_test(const char* f_name, int line_num, uint64_t pc,const int count, ...)
+TEE_Result D_test(const char* f_name, int line_num,uint64_t pc ,const int count, ...)
 {
 
     EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
@@ -46,20 +52,10 @@ TEE_Result D_test(const char* f_name, int line_num, uint64_t pc,const int count,
         }
         va_end(ap);
     }
-   
-   char a = 32;
-   char b = 17;
-   int te = (int)CHECK_SIGN(a, b, char);
-   EMSG("@@@@@@@@@@@@@@@@@ %d@@@@@@@",sizeof((char)125));
-   char te2 = O_ADD(a,b, char);
-   EMSG("@@@@@@@@@@@@@@@@@ %d@@@@@@@",te2);
-
-    //if(check_overflow() != 0)   return TEE_SCUEESS;
-
-    return TEE_GetMySyscall(pc, check_overflow());
+    return TEE_GetMySyscall(pc,check_overflow());
 }
 
-TEE_Result D_test2(const char* f_name, int line_num, uint64_t pc ,const int count, void *args)
+TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc, const int count, void *args)
 {
 
     EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
@@ -77,15 +73,7 @@ TEE_Result D_test2(const char* f_name, int line_num, uint64_t pc ,const int coun
             EMSG("%d",*(my_args+i));
         }
     }
-    
-    char a = 32;
-    char b = 17;
-    int te = (int)CHECK_SIGN(a, b, char);
-    EMSG("@@@@@@@@@@@@@@@@@ %d@@@@@@@",sizeof((char)125));
-    char te2 = O_ADD(a,b, char);
-    EMSG("@@@@@@@@@@@@@@@@@ %d@@@@@@@",te2);
-    EMSG("@@@@@@@@@@@@pc :: %"PRIu64,pc);
-    return TEE_GetMySyscall(pc, check_overflow());
+    return TEE_GetMySyscall(pc, check_overflow() );
 }
 
 
@@ -93,8 +81,8 @@ char* get_hash()
 {
     static char hash_test[64];
     TEE_Result res = TEE_SUCCESS;
-    res = TEE_GetMyHash(hash_test);
-    
+    res = TEE_GetMyHash(hash_test,false);
+
     if(res != TEE_SUCCESS){
         EMSG("GetMyHash Error !!");
         return NULL;
@@ -106,7 +94,38 @@ char* get_hash()
     }
     */
     return hash_test;
+}   
 
-}
+
+char* pop_hash()
+{
+    static char hash_storage[64];
+    
+    TEE_Result res = TEE_SUCCESS;
+    DMSG("EXECUTED1???????????????");
+    res = TEE_GetMyHash(hash_storage,true);
+    
+    if(res != TEE_SUCCESS){
+        EMSG("GetMyHash Error !!");
+        EMSG("%x",res);
+        return NULL;
+    }
+    DMSG("EXECUTED2???????????????");
+    
+    
+    if(check_overflow()){
+        TEE_MemMove(hash_storage+16, "true", 4);
+    }else{
+        TEE_MemMove(hash_storage+16, "false", 5);
+    }
+    
+    //for debugging
+    DMSG("SUCCESS???????????????");
+    for(int i=0; i<21; i++){
+        DMSG("%02x",*(hash_storage+i));
+    }
+     
+    return hash_storage;
+}   
 
 

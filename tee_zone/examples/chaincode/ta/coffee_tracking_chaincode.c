@@ -18,8 +18,8 @@
 #include <coffee_tracking_chaincode.h>
 #include <chaincode_library.h>
 #include <chaincode_tee_ree_communication.h>
-#include <coin_safer.h>
 
+#include <coin_safer.h>
 
 /* declare coffee tracking chaincode specific static functions used in this file only */
 static TEE_Result query(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4]);
@@ -36,7 +36,7 @@ static TEE_Result add_write_response(struct chaincode_ctx *ctx, uint32_t param_t
 
 TEE_Result TA_CreateEntryPoint(void)
 {
-    return TEE_SUCCESS;
+	return TEE_SUCCESS;
 }
 
 void TA_DestroyEntryPoint(void)
@@ -81,7 +81,7 @@ static TEE_Result add_write_response(struct chaincode_ctx *ctx, uint32_t param_t
 
 	/* send result */
 	char response[RESPONSE_SIZE] = "OK";
-    TEE_MemMove(response+2, pop_hash(), 16);
+    TEE_MemMove(response+2,pop_hash(),21);
 	return write_response(params, response);
 }
 
@@ -123,8 +123,8 @@ static TEE_Result add_get_state(struct chaincode_ctx *ctx, uint32_t param_types,
  */
 static TEE_Result add(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	FMSG("increasing number of consumed coffees...");
-    LOGH(0,0);
 	switch(ctx->chaincode_fct_state) {
 		case ADD_GET_STATE: {
 			TEE_Result res = add_get_state(ctx, param_types, params);
@@ -164,7 +164,7 @@ static TEE_Result create_write_response(struct chaincode_ctx *ctx, uint32_t para
 
 	/* send result */
 	char response[RESPONSE_SIZE] = "OK";
-    TEE_MemMove(response+2, pop_hash(), 16);
+    TEE_MemMove(response+2,pop_hash(),21);
 	return write_response(params, response);
 }
 
@@ -206,8 +206,8 @@ static TEE_Result create_get_state(struct chaincode_ctx *ctx, uint32_t param_typ
  */
 static TEE_Result create(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	    LOGH(0,0);
         FMSG("creating new account and storing initial number of consumed coffees...");
-        LOGH(0,0);
 		switch(ctx->chaincode_fct_state) {
 			case CREATE_GET_STATE: {
 				TEE_Result res = create_get_state(ctx, param_types, params);
@@ -256,10 +256,6 @@ static TEE_Result query_write_response(struct chaincode_ctx *ctx, uint32_t param
 	TEE_MemMove(response+strlen(person), ctx->chaincode_args.arguments[0], strlen(ctx->chaincode_args.arguments[0]));
 	TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0]), coffee, strlen(coffee));
 	TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])+strlen(coffee), val, strlen(val));
-    if(strlen(person)+strlen(ctx->chaincode_args.arguments[0])+strlen(coffee)+strlen(val) <80){
-	    TEE_MemMove(response+strlen(person)+strlen(ctx->chaincode_args.arguments[0])+strlen(coffee)+strlen(val),
-        pop_hash(), 16);
-    }
 	return write_response(params, response);
 }
 
@@ -278,8 +274,8 @@ static TEE_Result query_get_state(struct chaincode_ctx *ctx, uint32_t param_type
  */
 static TEE_Result query(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	    LOGH(0,0);
         FMSG("query entitiy person on ledger...");
-        LOGH(0,0);
 		switch(ctx->chaincode_fct_state) {
 		case QUERY_GET_STATE: {
 			TEE_Result res = query_get_state(ctx, param_types, params);
@@ -311,11 +307,11 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx,
 												TEE_PARAM_TYPE_VALUE_OUTPUT,
                                                 TEE_PARAM_TYPE_MEMREF_INOUT,
                                             	TEE_PARAM_TYPE_NONE);
-	/* check parameter types */
+	LOGH(0,0);
+    /* check parameter types */
 	if (param_types != exp_param_types) {
 		cleanup(params); 
 	}
-    LOGH(0,0);  //first
 
 	struct chaincode_ctx *ctx = (struct chaincode_ctx *)sess_ctx;
  
