@@ -19,4 +19,5 @@ void read_get_state(TEE_Param params[4], char *val);
 void read_put_state(TEE_Param params[4], char *ack);
 TEE_Result write_put_state(TEE_Param params[4], char *key, char *val);
 TEE_Result write_get_state(TEE_Param params[4], char *key);
+
 #endif /* CHAINCODE_LIBRARY_H */
