@@ -15,6 +15,7 @@ void init_context(struct chaincode_ctx *ctx, TEE_Param params[4])
 
 TEE_Result cleanup(TEE_Param params[4])
 {
+    DMSG("clean_up");
 	params[1].value.a = ERROR;
 	return TEE_SUCCESS;
 }
@@ -24,7 +25,7 @@ TEE_Result write_response(TEE_Param params[4], char *response)
 	if(strlen(response)+1 > RESPONSE_SIZE) {
 		cleanup(params);
 	}
-	struct invocation_response *invocation_response_data = (struct invocation_response *)params[2].memref.buffer;
+	struct invocation_response *invocation_response_data = (struct invocation_response *)params[3].memref.buffer;
 	TEE_MemFill(invocation_response_data->execution_response, 0, RESPONSE_SIZE);
 	TEE_MemMove(invocation_response_data->execution_response, response, RESPONSE_SIZE);
 	params[1].value.a = INVOCATION_RESPONSE;
@@ -33,14 +34,14 @@ TEE_Result write_response(TEE_Param params[4], char *response)
 
 void read_get_state(TEE_Param params[4], char *val)
 {
-	struct key_value *key_value_data = (struct key_value *)params[2].memref.buffer;
+	struct key_value *key_value_data = (struct key_value *)params[3].memref.buffer;
 	TEE_MemFill(val, 0, VAL_SIZE); 
 	TEE_MemMove(val, key_value_data->value, strlen(key_value_data->value)); 
 }
 
 void read_put_state(TEE_Param params[4], char *ack) 
 {
-	struct acknowledgement *ack_data = (struct acknowledgement *)params[2].memref.buffer;
+	struct acknowledgement *ack_data = (struct acknowledgement *)params[3].memref.buffer;
 	TEE_MemFill(ack, 0, ACK_SIZE);
 	TEE_MemMove(ack, ack_data->acknowledgement, strlen(ack_data->acknowledgement));
 }
@@ -48,11 +49,12 @@ void read_put_state(TEE_Param params[4], char *ack)
 TEE_Result write_put_state(TEE_Param params[4], char *key, char *val)
 {
 	/* cleanup if key or value does not fit into key_value structure */
-	if(strlen(key)+1 > KEY_SIZE || strlen(val)+1 > VAL_SIZE) {
+	/*
+    if(strlen(key)+1 > KEY_SIZE || strlen(val)+1 > VAL_SIZE) {
 		cleanup(params);
 	}
-
-	struct key_value *key_value_data = (struct key_value *)params[2].memref.buffer;
+    */
+	struct key_value *key_value_data = (struct key_value *)params[3].memref.buffer;
 	TEE_MemFill(key_value_data->key, 0, KEY_SIZE);
 	TEE_MemMove(key_value_data->key, key, KEY_SIZE); 
 	TEE_MemFill(key_value_data->value, 0, VAL_SIZE);
@@ -65,11 +67,12 @@ TEE_Result write_put_state(TEE_Param params[4], char *key, char *val)
 TEE_Result write_get_state(TEE_Param params[4], char *key)
 {
 	/* cleanup if key does not fit into key_value structure */
-	if(strlen(key)+1 > KEY_SIZE) {
+	/*
+    if(strlen(key)+1 > KEY_SIZE) {
 		return cleanup(params);
 	}
-
-	struct key_value *key_value_data = (struct key_value *)params[2].memref.buffer;
+    */
+	struct key_value *key_value_data = (struct key_value *)params[3].memref.buffer;
 	TEE_MemFill(key_value_data->key, 0, KEY_SIZE);
 	TEE_MemMove(key_value_data->key, key, KEY_SIZE); 
 

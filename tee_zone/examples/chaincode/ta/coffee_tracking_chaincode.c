@@ -59,7 +59,7 @@ TEE_Result TA_OpenSessionEntryPoint(uint32_t param_types, TEE_Param __maybe_unus
 
 	/* initialize session context state with 0 */
 	struct chaincode_ctx *ctx = calloc(1, sizeof(*ctx));
-	ctx->chaincode_fct_state = 0;
+	ctx->chaincode_fct_state = 'a';
 	*sess_ctx = ctx;
 
 	return TEE_SUCCESS;
@@ -72,6 +72,7 @@ void TA_CloseSessionEntryPoint(void *sess_ctx)
 
 static TEE_Result add_write_response(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* read ack of PutState */
 	char ack[ACK_SIZE];
 	read_put_state(params, ack);
@@ -87,6 +88,7 @@ static TEE_Result add_write_response(struct chaincode_ctx *ctx, uint32_t param_t
 
 static TEE_Result add_put_state(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* read value of GetState */ 
 	char val_string[VAL_SIZE];  
 	read_get_state(params, val_string);
@@ -100,7 +102,8 @@ static TEE_Result add_put_state(struct chaincode_ctx *ctx, uint32_t param_types,
 
 	/* PutState */
 	unsigned long consumed_coffees = strtoul(ctx->chaincode_args.arguments[1], &ptr, 10);
-	consumed_coffees += val;
+	//consumed_coffees += val;
+    consumed_coffees = O_UADD(consumed_coffees, val, unsigned long);
 	char consumed_coffees_string[VAL_SIZE];  
 	TEE_MemFill(consumed_coffees_string, 0, VAL_SIZE);
 	snprintf(consumed_coffees_string, VAL_SIZE-1, "%lu", consumed_coffees); /* unsigend long long takes 8 bytes, so it will fit into the char array of size VAL_SIZE */
@@ -109,6 +112,7 @@ static TEE_Result add_put_state(struct chaincode_ctx *ctx, uint32_t param_types,
 
 static TEE_Result add_get_state(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* GetState */
 	return write_get_state(params, ctx->chaincode_args.arguments[0]);
 }
@@ -130,21 +134,21 @@ static TEE_Result add(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param
 			TEE_Result res = add_get_state(ctx, param_types, params);
 
 			/* set context to next state */
-			ctx->chaincode_fct_state = 1;
+			ctx->chaincode_fct_state = 'b';
 			return res;
 		}
 		case ADD_PUT_STATE: {
 			TEE_Result res = add_put_state(ctx, param_types, params);
 
 			/* set context to next state */
-			ctx->chaincode_fct_state = 2;
+			ctx->chaincode_fct_state = 'c';
 			return res;
 		}	
 		case ADD_WRITE_RESPONSE: {
 			TEE_Result res = add_write_response(ctx, param_types, params);
 
 			/* reset context to initial state */
-			ctx->chaincode_fct_state = 0;
+			ctx->chaincode_fct_state = 'a';
 			return res;
 		}
 		default: {
@@ -155,6 +159,7 @@ static TEE_Result add(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param
 
 static TEE_Result create_write_response(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* read ack of PutState */
 	char ack[ACK_SIZE];
 	read_put_state(params, ack);
@@ -170,6 +175,7 @@ static TEE_Result create_write_response(struct chaincode_ctx *ctx, uint32_t para
 
 static TEE_Result create_put_state(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* read value of GetState */ 
 	char val[VAL_SIZE];
 	read_get_state(params, val);
@@ -190,6 +196,7 @@ static TEE_Result create_put_state(struct chaincode_ctx *ctx, uint32_t param_typ
 
 static TEE_Result create_get_state(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* GetState */
 	return write_get_state(params, ctx->chaincode_args.arguments[0]);
 }
@@ -213,21 +220,21 @@ static TEE_Result create(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Pa
 				TEE_Result res = create_get_state(ctx, param_types, params);
 
 				/* set context to next state */
-				ctx->chaincode_fct_state = 1;
+				ctx->chaincode_fct_state = 'b';
 				return res;
 			}
 			case CREATE_PUT_STATE: {
 				TEE_Result res = create_put_state(ctx, param_types, params);
 
 				/* set context to next state */
-				ctx->chaincode_fct_state = 2;
+				ctx->chaincode_fct_state = 'c';
 				return res;
 			}	
 			case CREATE_WRITE_RESPONSE: {
 				TEE_Result res = create_write_response(ctx, param_types, params);
 
 				/* reset context to initial state */
-				ctx->chaincode_fct_state = 0;
+				ctx->chaincode_fct_state = 'a';
 				return res;
 			}
 			default: {
@@ -238,6 +245,7 @@ static TEE_Result create(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Pa
 
 static TEE_Result query_write_response(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* read value of GetState */ 
 	char val[VAL_SIZE];
 	read_get_state(params, val);
@@ -261,6 +269,7 @@ static TEE_Result query_write_response(struct chaincode_ctx *ctx, uint32_t param
 
 static TEE_Result query_get_state(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Param params[4])
 {
+	LOGH(0,0);
 	/* GetState */
 	return write_get_state(params, ctx->chaincode_args.arguments[0]);
 }
@@ -281,14 +290,14 @@ static TEE_Result query(struct chaincode_ctx *ctx, uint32_t param_types, TEE_Par
 			TEE_Result res = query_get_state(ctx, param_types, params);
 
 			/* set context to next state */
-			ctx->chaincode_fct_state = 1;
+			ctx->chaincode_fct_state = 'b';
 			return res;
 		}
 		case QUERY_WRITE_RESPONSE: {
 			TEE_Result res = query_write_response(ctx, param_types, params);
 
 			/* reset context to initial state */
-			ctx->chaincode_fct_state = 0;
+			ctx->chaincode_fct_state = 'a';
 			return res;
 		}
 		default: {
@@ -324,13 +333,13 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx,
 	}
 
 	/* call the function */ 
-	if (strcmp(ctx->chaincode_fct, "create") == 0) {
+	if (strncmp(ctx->chaincode_fct, "create", 6) == 0) {
 		return create(ctx, param_types, params);
 	}
-	else if (strcmp(ctx->chaincode_fct, "add") == 0) {
+	else if (strncmp(ctx->chaincode_fct, "add", 3) == 0) {
 		return add(ctx, param_types, params);
 	}
-	else if (strcmp(ctx->chaincode_fct, "query") == 0) {
+	else if (strncmp(ctx->chaincode_fct, "query", 5) == 0) {
 		return query(ctx, param_types, params);
 	}
 	else {	

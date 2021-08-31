@@ -14,13 +14,13 @@
 		{ 0xa1, 0xbd, 0xa1, 0xeb, 0xca, 0x06, 0x71, 0xb9 }}
 
 /* used to store the state of the invocated transaction (add, create or query) */
-#define ADD_GET_STATE 0
-#define ADD_PUT_STATE 1
-#define ADD_WRITE_RESPONSE 2
-#define CREATE_GET_STATE 0
-#define CREATE_PUT_STATE 1
-#define CREATE_WRITE_RESPONSE 2
-#define QUERY_GET_STATE 0
-#define QUERY_WRITE_RESPONSE 1
+#define ADD_GET_STATE 'a'
+#define ADD_PUT_STATE 'b'
+#define ADD_WRITE_RESPONSE 'c'
+#define CREATE_GET_STATE 'a'
+#define CREATE_PUT_STATE 'b'
+#define CREATE_WRITE_RESPONSE 'c'
+#define QUERY_GET_STATE 'a'
+#define QUERY_WRITE_RESPONSE 'b'
 		
 #endif /*COFFEE_TRACKING_CHAINCODE_CHAINCODE_H*/
