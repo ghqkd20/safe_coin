@@ -87,12 +87,6 @@ char* get_hash()
         EMSG("GetMyHash Error !!");
         return NULL;
     }
-    /*for debugging
-    DMSG("EXECUTED???????????????");
-    for(int i=0; i<16; i++){
-        DMSG("%02x",hash_test[i]);
-    }
-    */
     return hash_test;
 }   
 
@@ -102,7 +96,6 @@ char* pop_hash()
     static char hash_storage[64];
     
     TEE_Result res = TEE_SUCCESS;
-    DMSG("EXECUTED1???????????????");
     res = TEE_GetMyHash(hash_storage,true);
     
     if(res != TEE_SUCCESS){
@@ -110,11 +103,11 @@ char* pop_hash()
         EMSG("%x",res);
         return NULL;
     }
-    DMSG("EXECUTED2???????????????");
     
     
     if(check_overflow()){
         TEE_MemMove(hash_storage+16, "true", 4);
+        overflow_flag = false;
     }else{
         TEE_MemMove(hash_storage+16, "false", 5);
     }

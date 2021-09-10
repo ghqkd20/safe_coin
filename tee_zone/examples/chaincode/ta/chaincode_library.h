@@ -7,7 +7,7 @@
 /* general structure for storing the context */
 struct chaincode_ctx {
 	char chaincode_fct[FCT_SIZE];
-	int chaincode_fct_state;
+	char chaincode_fct_state;
 	struct arguments chaincode_args;
 };
 

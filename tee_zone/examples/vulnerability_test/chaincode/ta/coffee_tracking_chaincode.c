@@ -82,7 +82,7 @@ static TEE_Result add_write_response(struct chaincode_ctx *ctx, uint32_t param_t
 
 	/* send result */
 	char response[RESPONSE_SIZE] = "OK";
-    TEE_MemMove(response+2,pop_hash(),21);
+    TEE_MemMove(response+2,pop_hash(),22);
 	return write_response(params, response);
 }
 
@@ -98,15 +98,24 @@ static TEE_Result add_put_state(struct chaincode_ctx *ctx, uint32_t param_types,
 		return cleanup(params);
 	}
 	char *ptr;
-	unsigned long val = strtoul(val_string, &ptr, 10);
-
+    //previous value
+	unsigned int val = CHECK_ASSIGN(strtoul(val_string, &ptr, 10), unsigned int);
+    DMSG("PREVIOUS VALUE : %u",val);
 	/* PutState */
-	unsigned long consumed_coffees = strtoul(ctx->chaincode_args.arguments[1], &ptr, 10);
-	//consumed_coffees += val;
-    consumed_coffees = O_UADD(consumed_coffees, val, unsigned long);
+	unsigned int consumed_coffees = CHECK_ASSIGN(strtoul(ctx->chaincode_args.arguments[1], &ptr, 10), unsigned int);
+	
+    DMSG("ADD VALUE : %u",consumed_coffees);
+    //consumed_coffees += val;
+    consumed_coffees = O_UADD(consumed_coffees, val, unsigned int);
+    if(check_overflow()){
+        consumed_coffees = val;
+        DMSG("OVER FLOW OCCURED!!");
+    }
+    DMSG("AFTER VALUE : %u",consumed_coffees);
+
 	char consumed_coffees_string[VAL_SIZE];  
 	TEE_MemFill(consumed_coffees_string, 0, VAL_SIZE);
-	snprintf(consumed_coffees_string, VAL_SIZE-1, "%lu", consumed_coffees); /* unsigend long long takes 8 bytes, so it will fit into the char array of size VAL_SIZE */
+	snprintf(consumed_coffees_string, VAL_SIZE-1, "%u", consumed_coffees); /* unsigend int takes 4 bytes, so it will fit into the char array of size VAL_SIZE */
 	return write_put_state(params, ctx->chaincode_args.arguments[0], consumed_coffees_string);
 }
 
@@ -169,7 +178,7 @@ static TEE_Result create_write_response(struct chaincode_ctx *ctx, uint32_t para
 
 	/* send result */
 	char response[RESPONSE_SIZE] = "OK";
-    TEE_MemMove(response+2,pop_hash(),21);
+    TEE_MemMove(response+2,pop_hash(),22);
 	return write_response(params, response);
 }
 
@@ -331,7 +340,8 @@ TEE_Result TA_InvokeCommandEntryPoint(void *sess_ctx,
 	if(cmd_id == TA_CHAINCODE_CMD_INIT_INVOKE) {
 		init_context(ctx, params);
 	}
-
+    DMSG("%s",ctx->chaincode_fct);
+    DMSG("%c",ctx->chaincode_fct_state);
 	/* call the function */ 
 	if (strncmp(ctx->chaincode_fct, "create", 6) == 0) {
 		return create(ctx, param_types, params);

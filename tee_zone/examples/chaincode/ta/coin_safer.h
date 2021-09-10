@@ -29,7 +29,7 @@ TYPE_LIMITS set_limit(size_t val);
 #define CHECK_ASSIGN(a, type)   ({      \
         TYPE_LIMITS limits = set_limit(sizeof(type));   \
         uint64_t c = limits;                            \
-        if((~c & a) || (a != (type)a) ) overflowflag = true;    \
+        if((~c & a) || (a != (type)a) ) overflow_flag = true;    \
         (type) a;                                       \
 })
 

@@ -5,8 +5,11 @@ void init_context(struct chaincode_ctx *ctx, TEE_Param params[4])
 {
 	/* stores function in context */ 
 	TEE_MemFill(ctx->chaincode_fct, 0, FCT_SIZE);
-	TEE_MemMove(ctx->chaincode_fct,  params[0].memref.buffer, strlen( params[0].memref.buffer)); 
-	
+	TEE_MemMove(ctx->chaincode_fct,  params[0].memref.buffer, strlen(params[0].memref.buffer)); 
+    
+    DMSG("init_context buffer size :  %d",strlen(params[0].memref.buffer));
+    DMSG("init_context buffer :  %s",params[0].memref.buffer);
+
 	/* stores args in context */
 	struct arguments *args_data = (struct arguments *)params[2].memref.buffer;
 	TEE_MemFill(&(ctx->chaincode_args), 0, sizeof(struct arguments));
@@ -25,7 +28,7 @@ TEE_Result write_response(TEE_Param params[4], char *response)
 	if(strlen(response)+1 > RESPONSE_SIZE) {
 		cleanup(params);
 	}
-	struct invocation_response *invocation_response_data = (struct invocation_response *)params[3].memref.buffer;
+	struct invocation_response *invocation_response_data = (struct invocation_response *)params[2].memref.buffer;
 	TEE_MemFill(invocation_response_data->execution_response, 0, RESPONSE_SIZE);
 	TEE_MemMove(invocation_response_data->execution_response, response, RESPONSE_SIZE);
 	params[1].value.a = INVOCATION_RESPONSE;
