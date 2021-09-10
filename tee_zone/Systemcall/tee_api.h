@@ -12,6 +12,7 @@
 #include <tee_api_defines.h>
 #include <tee_api_types.h>
 #include <trace.h>
+
 /* Property access functions */
 
 TEE_Result TEE_GetPropertyAsString(TEE_PropSetHandle propsetOrEnumerator,
@@ -443,4 +444,6 @@ void TEE_BigIntComputeFMM(TEE_BigIntFMM *dest, const TEE_BigIntFMM *op1,
 /* User define system call*/
 TEE_Result TEE_GetMySyscall(uint64_t pc, bool ov);
 TEE_Result TEE_GetMyHash(void* str, bool ispop);
+
+
 #endif /* TEE_API_H */
