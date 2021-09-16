@@ -3,6 +3,7 @@ For Graduation Project, group safe_coin
   
 This porject supports chaincode's integrity based on 'TZ4Fabric' project.  
 So, we prevent control flow and overflow attacks.  
+This is version 'overflow_update'
 
 ## Index
 
