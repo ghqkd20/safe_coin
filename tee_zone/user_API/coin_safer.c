@@ -1,7 +1,5 @@
 #include <coin_safer.h>
 
-bool overflow_flag = false;
-
 TYPE_LIMITS set_limit(size_t val){
     TYPE_LIMITS res = NON_B;
     switch(val){
@@ -27,11 +25,6 @@ TYPE_LIMITS set_limit(size_t val){
 }
 
 
-bool check_overflow(){
-    return overflow_flag;
-}
-
-
 TEE_Result D_test(const char* f_name, int line_num,uint64_t pc ,const int count, ...)
 {
 
@@ -52,7 +45,7 @@ TEE_Result D_test(const char* f_name, int line_num,uint64_t pc ,const int count,
         }
         va_end(ap);
     }
-    return TEE_GetMySyscall(pc,check_overflow());
+    return TEE_GetMySyscall(pc);
 }
 
 TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc, const int count, void *args)
@@ -73,7 +66,7 @@ TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc, const int count
             EMSG("%d",*(my_args+i));
         }
     }
-    return TEE_GetMySyscall(pc, check_overflow() );
+    return TEE_GetMySyscall(pc);
 }
 
 
@@ -108,7 +101,16 @@ char* pop_hash()
         return NULL;
     }
 
-    if(check_overflow()){
+    bool check_overflow = false;
+    
+    res = TEE_GetMyFlag(&check_overflow);
+    
+    if(res != TEE_SUCCESS){
+        EMSG("GetMyFlag Error !!");
+        return NULL;
+    }
+    
+    if(check_overflow){
         TEE_MemMove(hash_storage+16, "true", 4);
     }else{
         TEE_MemMove(hash_storage+16, "false", 5);
@@ -122,6 +124,18 @@ char* pop_hash()
     }
     */
     return hash_test;
-}   
+}
+
+/* 
+ *  Get overflow flag
+ *  WARNING :: if the flag already set, reset to init(false)
+ *  only for debugging
+ */
+bool get_flag()
+{
+    bool check_overflow = false;
+    TEE_GetMyFlag(&check_overflow);
+    return check_overflow;
+}
 
 
