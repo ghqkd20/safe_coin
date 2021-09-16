@@ -428,14 +428,22 @@ TEE_Result TEE_CacheInvalidate(char *buf, size_t len)
 }
 
 /* User define system call*/
-TEE_Result TEE_GetMySyscall(uint64_t pc, bool ov)
+TEE_Result TEE_GetMySyscall(uint64_t pc)
 {
-    return _utee_mysyscall(pc,ov);
+    return _utee_mysyscall(pc);
 }
 
 TEE_Result TEE_GetMyHash(void *str, bool ispop)
 {
     return _utee_getmyhash(str, ispop);
 }
+TEE_Result TEE_GetMyFlag(bool* myflag)
+{
+    return _utee_myoverflow(true, myflag);
+}
 
+TEE_Result TEE_SetMyFlag(bool* myflag)
+{   
+    return _utee_myoverflow(false, myflag);
+}
 

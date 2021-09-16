@@ -124,7 +124,7 @@ static const struct syscall_entry tee_svc_syscall_table[] = {
     /* User define system call*/
     SYSCALL_ENTRY(syscall_mysyscall),          //72
     SYSCALL_ENTRY(syscall_getmyhash),
-
+    SYSCALL_ENTRY(syscall_myoverflow),
 
 };
 

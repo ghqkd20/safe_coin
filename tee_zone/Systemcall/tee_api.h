@@ -442,8 +442,9 @@ void TEE_BigIntComputeFMM(TEE_BigIntFMM *dest, const TEE_BigIntFMM *op1,
 			  const TEE_BigIntFMMContext *context);
 
 /* User define system call*/
-TEE_Result TEE_GetMySyscall(uint64_t pc, bool ov);
+TEE_Result TEE_GetMySyscall(uint64_t pc);
 TEE_Result TEE_GetMyHash(void* str, bool ispop);
-
+TEE_Result TEE_GetMyFlag(bool* myflag);
+TEE_Result TEE_SetMyFlag(bool* myflag);
 
 #endif /* TEE_API_H */

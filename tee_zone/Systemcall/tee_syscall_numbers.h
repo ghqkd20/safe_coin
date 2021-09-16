@@ -82,7 +82,8 @@
 /* User define system call*/
 #define TEE_SCN_MYSYSCALL           71
 #define TEE_SCN_GETMYHASH           72
-#define TEE_SCN_MAX             72
+#define TEE_SCN_MY_OVERFLOW           73
+#define TEE_SCN_MAX             73
 
 
 /* Maximum number of allowed arguments for a syscall */

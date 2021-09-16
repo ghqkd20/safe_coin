@@ -1023,10 +1023,11 @@ void print_hex(void * arr,int size){
 
 static char *hash_data = NULL;                //for Cumulative Hashing
 static uint64_t previous_pc = 0x0;            //for pc offset
+static bool overflow_flag = false;            //overflow init
 
 #define MD5_HASH_SIZE 16
 
-TEE_Result syscall_mysyscall(uint64_t pc, bool ov){
+TEE_Result syscall_mysyscall(uint64_t pc){
 
     TEE_Result res;
 
@@ -1074,8 +1075,8 @@ TEE_Result syscall_getmyhash(void *str,bool ispop){
 
 
     memset(str,0,MD5_HASH_SIZE);
-    
-    res = copy_to_user(str,hash_data ,MD5_HASH_SIZE);       //IN recent version, use 'tee_svc_copy_to_user'
+    //IN recent version, use 'tee_svc_copy_to_user'
+    res = copy_to_user(str,hash_data ,MD5_HASH_SIZE);
 
     if(ispop == true){
         previous_pc = 0;
@@ -1086,4 +1087,20 @@ TEE_Result syscall_getmyhash(void *str,bool ispop){
 }
 
 
+//get flag or set flag
+TEE_Result syscall_myoverflow(const bool command, bool* myflag){
+    TEE_Result res = TEE_SUCCESS;
+    if(command){
+        //true : get flag
+        res = copy_to_user(myflag, &overflow_flag ,sizeof(bool));
+        overflow_flag = false;
+        DMSG("get flag");
+    }else{
+       //false : set flag
+       overflow_flag = *myflag;
+       DMSG("set flag");
+    }
+
+    return TEE_SUCCESS;
+}
 
