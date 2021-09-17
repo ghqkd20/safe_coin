@@ -28,7 +28,8 @@ TYPE_LIMITS set_limit(size_t val){
 TEE_Result D_test(const char* f_name, int line_num,uint64_t pc ,const int count, ...)
 {
 
-    EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
+    //for debugging
+    //DMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
 
     /*
      *TODO :: Check operation overflow with Variadic parameters
@@ -50,8 +51,9 @@ TEE_Result D_test(const char* f_name, int line_num,uint64_t pc ,const int count,
 
 TEE_Result D_test2(const char* f_name, int line_num,uint64_t pc, const int count, void *args)
 {
-
-    EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
+    
+    //for debugging
+    //EMSG("FUNCTION NAME : %s, LINE NUMBER : %d",f_name, line_num);
 
     /*
      *TODO :: Check operation overflow with pointer

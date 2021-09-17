@@ -1094,11 +1094,11 @@ TEE_Result syscall_myoverflow(const bool command, bool* myflag){
         //true : get flag
         res = copy_to_user(myflag, &overflow_flag ,sizeof(bool));
         overflow_flag = false;
-        DMSG("get flag");
+        //DMSG("get flag");
     }else{
        //false : set flag
        overflow_flag = *myflag;
-       DMSG("set flag");
+       //DMSG("set flag");
     }
 
     return TEE_SUCCESS;
