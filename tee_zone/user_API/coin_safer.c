@@ -92,9 +92,9 @@ char* get_hash()
 
 char* pop_hash()
 {
-    static char hash_test[64];
+    static char hash_storage[64];
     TEE_Result res = TEE_SUCCESS;
-    res = TEE_GetMyHash(hash_test,true);
+    res = TEE_GetMyHash(hash_storage,true);
 
     if(res != TEE_SUCCESS){
         EMSG("GetMyHash Error !!");
@@ -120,10 +120,10 @@ char* pop_hash()
     /*for debugging
     DMSG("EXECUTED???????????????");
     for(int i=0; i<16; i++){
-        DMSG("%02x",hash_test[i]);
+        DMSG("%02x",hash_storage[i]);
     }
     */
-    return hash_test;
+    return hash_storage;
 }
 
 /* 
